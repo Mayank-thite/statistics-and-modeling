@@ -1,0 +1,122 @@
+{
+  "n_train": 32950,
+  "n_test": 8238,
+  "positive_rate": 0.11265417111780131,
+  "cv_5fold": {
+    "logistic": {
+      "roc_auc": 0.7889011723199426,
+      "roc_auc_sd": 0.00665236323059643,
+      "pr_auc": 0.4495688981272967,
+      "pr_auc_sd": 0.010182555706952553,
+      "brier": 0.07888604088126028
+    },
+    "logistic (balanced)": {
+      "roc_auc": 0.7896112233073351,
+      "roc_auc_sd": 0.005424195196759041,
+      "pr_auc": 0.4438920998511512,
+      "pr_auc_sd": 0.008020169002136543,
+      "brier": 0.1651192310387508
+    },
+    "random forest": {
+      "roc_auc": 0.7918116254297102,
+      "roc_auc_sd": 0.0036165850758731913,
+      "pr_auc": 0.46889632050158125,
+      "pr_auc_sd": 0.010120657988440241,
+      "brier": 0.07720557486589
+    },
+    "lightgbm": {
+      "roc_auc": 0.794806957620188,
+      "roc_auc_sd": 0.003652276126968922,
+      "pr_auc": 0.4693416549193339,
+      "pr_auc_sd": 0.012637565162397472,
+      "brier": 0.07726202470198199
+    }
+  },
+  "test": {
+    "logistic": {
+      "roc_auc": 0.8008457061653852,
+      "pr_auc": 0.46525985263728226,
+      "brier": 0.07686250409033378
+    },
+    "logistic (balanced)": {
+      "roc_auc": 0.8009878119250908,
+      "pr_auc": 0.45970096825601864,
+      "brier": 0.16163958063537412
+    },
+    "random forest": {
+      "roc_auc": 0.8091876385678569,
+      "pr_auc": 0.4936358690691326,
+      "brier": 0.0743572625938177
+    },
+    "lightgbm": {
+      "roc_auc": 0.8137826371526959,
+      "pr_auc": 0.4947431342904054,
+      "brier": 0.07411943617456163
+    }
+  },
+  "decision_model": "lightgbm",
+  "cost_fp": 5,
+  "cost_fn": 50,
+  "threshold": 0.11,
+  "policies": [
+    {
+      "policy": "call nobody",
+      "calls": 0,
+      "subscribers reached": 0,
+      "missed": 928,
+      "precision": NaN,
+      "recall": 0.0,
+      "total cost": 46400.0
+    },
+    {
+      "policy": "default threshold 0.5",
+      "calls": 407,
+      "subscribers reached": 268,
+      "missed": 660,
+      "precision": 0.6584766584766585,
+      "recall": 0.28879310344827586,
+      "total cost": 33695.0
+    },
+    {
+      "policy": "cost-based threshold 0.11",
+      "calls": 1627,
+      "subscribers reached": 615,
+      "missed": 313,
+      "precision": 0.3779963122311002,
+      "recall": 0.6627155172413793,
+      "total cost": 20710.0
+    },
+    {
+      "policy": "call everyone",
+      "calls": 8238,
+      "subscribers reached": 928,
+      "missed": 0,
+      "precision": 0.11264870114105366,
+      "recall": 1.0,
+      "total cost": 36550.0
+    }
+  ],
+  "top_permutation_features": [
+    "nr_employed",
+    "euribor3m",
+    "month",
+    "previously_contacted",
+    "contact"
+  ],
+  "time_ordered_check": {
+    "logistic": {
+      "roc_auc": 0.7484013937754096,
+      "pr_auc": 0.5270452302557876,
+      "brier": 0.1905094813986036,
+      "mean_predicted": 0.2563693333906727,
+      "actual_rate": 0.3083272638990046
+    },
+    "lightgbm": {
+      "roc_auc": 0.6583475898436528,
+      "pr_auc": 0.44484238356957334,
+      "brier": 0.2498133571848863,
+      "mean_predicted": 0.09279016764429995,
+      "actual_rate": 0.3083272638990046
+    }
+  }
+}
