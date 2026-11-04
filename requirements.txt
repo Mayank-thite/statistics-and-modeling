@@ -12,3 +12,4 @@ nbconvert==7.17.2
 nbformat==5.11.1
 ipykernel==7.4.0
 pytest==9.2.0
+ruff==0.14.3

@@ -12,7 +12,10 @@ BANK_ROWS = [
     '40;"admin.";"single";"university.degree";"no";"yes";"no";"cellular";"may";"tue";500;2;6;1;"success";-1.8;92.893;-46.2;1.313;5099.1;"yes"',
 ]
 
-BIKE_HEADER = "instant,dteday,season,yr,mnth,holiday,weekday,workingday,weathersit,temp,atemp,hum,windspeed,casual,registered,cnt"
+BIKE_HEADER = (
+    "instant,dteday,season,yr,mnth,holiday,weekday,workingday,weathersit,"
+    "temp,atemp,hum,windspeed,casual,registered,cnt"
+)
 BIKE_ROWS = [
     "1,2011-01-01,1,0,1,0,6,0,2,0.5,0.5,0.5,0.1,331,654,985",
     "2,2011-01-02,1,0,1,0,0,0,1,0.25,0.2,0.7,0.2,131,670,801",

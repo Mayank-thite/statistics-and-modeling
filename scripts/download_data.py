@@ -6,11 +6,14 @@ The script is idempotent: files that already exist are left alone.
 from __future__ import annotations
 
 import io
+import logging
 import sys
 import zipfile
 from pathlib import Path
 
 import requests
+
+log = logging.getLogger("download_data")
 
 RAW = Path(__file__).resolve().parents[1] / "data" / "raw"
 
@@ -29,6 +32,7 @@ BIKE_FILES = ["day.csv", "hour.csv"]
 
 
 def _fetch(urls: list[str]) -> bytes:
+    """Return the body of the first URL that downloads cleanly."""
     last_err: Exception | None = None
     for url in urls:
         try:
@@ -36,7 +40,7 @@ def _fetch(urls: list[str]) -> bytes:
             r.raise_for_status()
             return r.content
         except Exception as err:  # try the next mirror
-            print(f"  failed {url}: {err}")
+            log.warning("failed %s: %s", url, err)
             last_err = err
     raise RuntimeError(f"all downloads failed: {last_err}")
 
@@ -60,32 +64,33 @@ def _find_in_zip(zf: zipfile.ZipFile, name: str) -> bytes | None:
 def download_bank() -> None:
     out = RAW / BANK_FILE
     if out.exists():
-        print(f"exists: {out.name}")
+        log.info("exists: %s", out.name)
         return
-    print("downloading bank marketing")
+    log.info("downloading bank marketing")
     zf = zipfile.ZipFile(io.BytesIO(_fetch(SOURCES["bank"])))
     data = _find_in_zip(zf, BANK_FILE)
     if data is None:
         raise RuntimeError(f"{BANK_FILE} not found in archive")
     out.write_bytes(data)
-    print(f"wrote {out.name} ({len(data):,} bytes)")
+    log.info("wrote %s (%s bytes)", out.name, f"{len(data):,}")
 
 
 def download_bike() -> None:
     if all((RAW / f).exists() for f in BIKE_FILES):
-        print("exists: " + ", ".join(BIKE_FILES))
+        log.info("exists: %s", ", ".join(BIKE_FILES))
         return
-    print("downloading bike sharing")
+    log.info("downloading bike sharing")
     zf = zipfile.ZipFile(io.BytesIO(_fetch(SOURCES["bike"])))
     for name in BIKE_FILES:
         data = _find_in_zip(zf, name)
         if data is None:
             raise RuntimeError(f"{name} not found in archive")
         (RAW / name).write_bytes(data)
-        print(f"wrote {name} ({len(data):,} bytes)")
+        log.info("wrote %s (%s bytes)", name, f"{len(data):,}")
 
 
 def main() -> int:
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     RAW.mkdir(parents=True, exist_ok=True)
     download_bank()
     download_bike()

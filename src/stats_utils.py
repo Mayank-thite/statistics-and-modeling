@@ -1,7 +1,7 @@
 """Small statistics helpers: effect sizes, bootstrap, outliers, sample size."""
 from __future__ import annotations
 
-from typing import Callable, Sequence
+from collections.abc import Callable, Sequence
 
 import numpy as np
 import pandas as pd

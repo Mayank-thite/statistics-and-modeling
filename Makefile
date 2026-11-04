@@ -3,10 +3,10 @@ VENV   := .venv
 BIN    := $(VENV)/bin
 NOTEBOOKS := $(sort $(wildcard notebooks/[0-9]*.ipynb))
 
-.PHONY: all setup data test notebooks clean
+.PHONY: all setup data lint test notebooks clean
 
-## Full run: install, download data, run tests, execute every notebook in order
-all: setup data test notebooks
+## Full run: install, download data, lint, run tests, execute every notebook in order
+all: setup data lint test notebooks
 
 setup: $(VENV)/.installed
 
@@ -18,6 +18,9 @@ $(VENV)/.installed: requirements.txt
 
 data: setup
 	$(BIN)/python scripts/download_data.py
+
+lint: setup
+	$(BIN)/ruff check .
 
 test: setup
 	$(BIN)/pytest -q

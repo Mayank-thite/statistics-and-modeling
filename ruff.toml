@@ -1,0 +1,11 @@
+line-length = 120
+target-version = "py313"
+extend-include = ["*.ipynb"]
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[lint.per-file-ignores]
+# notebooks: sys.path setup comes before the src imports, chart cells end in `;`,
+# and I let analysis lines run long rather than wrap every f-string
+"notebooks/*.ipynb" = ["E402", "E703", "E501", "B905"]
