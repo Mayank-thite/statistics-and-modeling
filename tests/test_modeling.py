@@ -6,9 +6,12 @@ from src.modeling import (
     best_threshold,
     chronological_split,
     cost_curve,
+    cost_sensitivity,
     expected_cost,
     regression_metrics,
+    time_ordered_split,
     vif_table,
+    within_group_auc,
 )
 
 
@@ -52,3 +55,39 @@ def test_best_threshold_picks_cheapest():
     t = best_threshold(y, p, 1, 10)
     assert curve["cost"].min() == expected_cost(y, p, t, 1, 10)
     assert t <= 0.2
+
+
+def test_time_ordered_split_keeps_order():
+    X = pd.DataFrame({"a": range(10)})
+    y = pd.Series(range(10))
+    X_tr, X_te, y_tr, y_te = time_ordered_split(X, y, 0.7)
+    assert X_tr["a"].tolist() == list(range(7))
+    assert y_te.tolist() == [7, 8, 9]
+    with pytest.raises(ValueError):
+        time_ordered_split(X, y, 1.0)
+
+
+def test_within_group_auc_ignores_base_rate_differences():
+    # Group A is all low scores and mostly negative, group B all high scores and mostly positive.
+    # Pooled AUC looks good only because of the base rates. Inside each group the score is useless.
+    y = np.array([0, 0, 0, 1, 1, 1, 1, 0])
+    p = np.array([0.1, 0.1, 0.1, 0.1, 0.9, 0.9, 0.9, 0.9])
+    g = np.array(["A", "A", "A", "A", "B", "B", "B", "B"])
+    assert within_group_auc(y, p, g) == pytest.approx(0.5)
+
+
+def test_within_group_auc_skips_single_class_groups():
+    y = np.array([0, 1, 1, 1])
+    p = np.array([0.2, 0.8, 0.5, 0.6])
+    g = np.array(["A", "A", "B", "B"])
+    assert within_group_auc(y, p, g) == pytest.approx(1.0)
+
+
+def test_cost_sensitivity_columns_and_saving():
+    y = np.array([1, 1, 0, 0, 0])
+    p = np.array([0.9, 0.2, 0.8, 0.1, 0.3])
+    out = cost_sensitivity(y, p, y, p, [(1, 10), (1, 1)])
+    assert len(out) == 2
+    assert (out["cost_model"] <= out["cost_call_everyone"]).all()
+    row = out.iloc[0]
+    assert row["saving_vs_call_everyone"] == pytest.approx(1 - row["cost_model"] / row["cost_call_everyone"])
