@@ -1,0 +1,13 @@
+# environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# raw data is downloaded by scripts/download_data.py
+data/raw/*
+!data/raw/.gitkeep
+
+.DS_Store
