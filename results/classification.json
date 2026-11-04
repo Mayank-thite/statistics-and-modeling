@@ -1,122 +1,236 @@
 {
+  "split": "time ordered, first 80% of calls train, last 20% test",
   "n_train": 32950,
   "n_test": 8238,
-  "positive_rate": 0.11265417111780131,
-  "cv_5fold": {
+  "train_months": [
+    "2008-05",
+    "2009-05"
+  ],
+  "test_months": [
+    "2009-05",
+    "2010-11"
+  ],
+  "positive_rate_train": 0.0637329286798179,
+  "positive_rate_test": 0.3083272638990046,
+  "cv_time_series": {
     "logistic": {
-      "roc_auc": 0.7889011723199426,
-      "roc_auc_sd": 0.00665236323059643,
-      "pr_auc": 0.4495688981272967,
-      "pr_auc_sd": 0.010182555706952553,
-      "brier": 0.07888604088126028
+      "roc_auc": 0.5133820400455402,
+      "roc_auc_min": 0.4161121563948419,
+      "pr_auc": 0.07491959177200586,
+      "brier": 0.21313837130064572
     },
-    "logistic (balanced)": {
-      "roc_auc": 0.7896112233073351,
-      "roc_auc_sd": 0.005424195196759041,
-      "pr_auc": 0.4438920998511512,
-      "pr_auc_sd": 0.008020169002136543,
-      "brier": 0.1651192310387508
-    },
-    "random forest": {
-      "roc_auc": 0.7918116254297102,
-      "roc_auc_sd": 0.0036165850758731913,
-      "pr_auc": 0.46889632050158125,
-      "pr_auc_sd": 0.010120657988440241,
-      "brier": 0.07720557486589
+    "logistic, no macro": {
+      "roc_auc": 0.547423115206515,
+      "roc_auc_min": 0.4303064426739338,
+      "pr_auc": 0.10310717989173818,
+      "brier": 0.06683006617673662
     },
     "lightgbm": {
-      "roc_auc": 0.794806957620188,
-      "roc_auc_sd": 0.003652276126968922,
-      "pr_auc": 0.4693416549193339,
-      "pr_auc_sd": 0.012637565162397472,
-      "brier": 0.07726202470198199
+      "roc_auc": 0.49359612186292123,
+      "roc_auc_min": 0.43654027068338025,
+      "pr_auc": 0.07208673959823436,
+      "brier": 0.0695518327168497
+    },
+    "lightgbm, no macro": {
+      "roc_auc": 0.5012898115186268,
+      "roc_auc_min": 0.4404570694323345,
+      "pr_auc": 0.07475597864401222,
+      "brier": 0.0694245749193066
     }
   },
-  "test": {
-    "logistic": {
-      "roc_auc": 0.8008457061653852,
-      "pr_auc": 0.46525985263728226,
-      "brier": 0.07686250409033378
-    },
-    "logistic (balanced)": {
-      "roc_auc": 0.8009878119250908,
-      "pr_auc": 0.45970096825601864,
-      "brier": 0.16163958063537412
-    },
-    "random forest": {
-      "roc_auc": 0.8091876385678569,
-      "pr_auc": 0.4936358690691326,
-      "brier": 0.0743572625938177
-    },
-    "lightgbm": {
-      "roc_auc": 0.8137826371526959,
-      "pr_auc": 0.4947431342904054,
-      "brier": 0.07411943617456163
-    }
-  },
-  "decision_model": "lightgbm",
-  "cost_fp": 5,
-  "cost_fn": 50,
-  "threshold": 0.11,
-  "policies": [
-    {
-      "policy": "call nobody",
-      "calls": 0,
-      "subscribers reached": 0,
-      "missed": 928,
-      "precision": NaN,
-      "recall": 0.0,
-      "total cost": 46400.0
-    },
-    {
-      "policy": "default threshold 0.5",
-      "calls": 407,
-      "subscribers reached": 268,
-      "missed": 660,
-      "precision": 0.6584766584766585,
-      "recall": 0.28879310344827586,
-      "total cost": 33695.0
-    },
-    {
-      "policy": "cost-based threshold 0.11",
-      "calls": 1627,
-      "subscribers reached": 615,
-      "missed": 313,
-      "precision": 0.3779963122311002,
-      "recall": 0.6627155172413793,
-      "total cost": 20710.0
-    },
-    {
-      "policy": "call everyone",
-      "calls": 8238,
-      "subscribers reached": 928,
-      "missed": 0,
-      "precision": 0.11264870114105366,
-      "recall": 1.0,
-      "total cost": 36550.0
-    }
-  ],
-  "top_permutation_features": [
-    "nr_employed",
-    "euribor3m",
-    "month",
-    "previously_contacted",
-    "contact"
-  ],
-  "time_ordered_check": {
+  "test_time_split": {
     "logistic": {
       "roc_auc": 0.7484013937754096,
       "pr_auc": 0.5270452302557876,
+      "within_month_auc": 0.6287925610258531,
       "brier": 0.1905094813986036,
       "mean_predicted": 0.2563693333906727,
+      "actual_rate": 0.3083272638990046
+    },
+    "logistic, no macro": {
+      "roc_auc": 0.7007643585399491,
+      "pr_auc": 0.49628944630501337,
+      "within_month_auc": 0.6354048648457186,
+      "brier": 0.222887570293889,
+      "mean_predicted": 0.17485135876228064,
       "actual_rate": 0.3083272638990046
     },
     "lightgbm": {
       "roc_auc": 0.6583475898436528,
       "pr_auc": 0.44484238356957334,
+      "within_month_auc": 0.618004433030951,
       "brier": 0.2498133571848863,
       "mean_predicted": 0.09279016764429995,
       "actual_rate": 0.3083272638990046
+    },
+    "lightgbm, no macro": {
+      "roc_auc": 0.6810662257512651,
+      "pr_auc": 0.4675985250322002,
+      "within_month_auc": 0.6145271947098121,
+      "brier": 0.2225912576381539,
+      "mean_predicted": 0.16428342174104907,
+      "actual_rate": 0.3083272638990046
+    }
+  },
+  "random_vs_time_roc_auc": {
+    "logistic": {
+      "random split ROC-AUC": 0.8008457061653852,
+      "time split ROC-AUC": 0.7484013937754096,
+      "drop": 0.0524443123899756
+    },
+    "logistic, no macro": {
+      "random split ROC-AUC": 0.7648070811123167,
+      "time split ROC-AUC": 0.7007643585399491,
+      "drop": 0.06404272257236754
+    },
+    "lightgbm": {
+      "random split ROC-AUC": 0.8137826371526959,
+      "time split ROC-AUC": 0.6583475898436528,
+      "drop": 0.15543504730904312
+    },
+    "lightgbm, no macro": {
+      "random split ROC-AUC": 0.7823628915279022,
+      "time split ROC-AUC": 0.6810662257512651,
+      "drop": 0.1012966657766371
+    }
+  },
+  "decision_model": "logistic, no macro",
+  "cost_fp": 5,
+  "cost_fn": 50,
+  "threshold": 0.06,
+  "policies": [
+    {
+      "policy": "call nobody",
+      "calls": 0,
+      "subscribers reached": 0,
+      "missed": 2540,
+      "precision": NaN,
+      "recall": 0.0,
+      "total cost": 127000.0
+    },
+    {
+      "policy": "default threshold 0.5",
+      "calls": 889,
+      "subscribers reached": 462,
+      "missed": 2078,
+      "precision": 0.5196850393700787,
+      "recall": 0.18188976377952756,
+      "total cost": 106035.0
+    },
+    {
+      "policy": "cost-based threshold 0.06",
+      "calls": 5460,
+      "subscribers reached": 2071,
+      "missed": 469,
+      "precision": 0.3793040293040293,
+      "recall": 0.8153543307086614,
+      "total cost": 40395.0
+    },
+    {
+      "policy": "call everyone",
+      "calls": 8238,
+      "subscribers reached": 2540,
+      "missed": 0,
+      "precision": 0.3083272638990046,
+      "recall": 1.0,
+      "total cost": 28490.0
+    }
+  ],
+  "cost_sensitivity": [
+    {
+      "cost_fp": 5,
+      "cost_fn": 25,
+      "threshold": 0.08,
+      "calls": 3859,
+      "cost_model": 30175.0,
+      "cost_default_0.5": 54085.0,
+      "cost_call_everyone": 28490.0,
+      "saving_vs_call_everyone": -0.05914355914355918
+    },
+    {
+      "cost_fp": 5,
+      "cost_fn": 50,
+      "threshold": 0.06,
+      "calls": 5460,
+      "cost_model": 40395.0,
+      "cost_default_0.5": 106035.0,
+      "cost_call_everyone": 28490.0,
+      "saving_vs_call_everyone": -0.41786591786591787
+    },
+    {
+      "cost_fp": 5,
+      "cost_fn": 100,
+      "threshold": 0.01,
+      "calls": 8238,
+      "cost_model": 28490.0,
+      "cost_default_0.5": 209935.0,
+      "cost_call_everyone": 28490.0,
+      "saving_vs_call_everyone": 0.0
+    },
+    {
+      "cost_fp": 2,
+      "cost_fn": 50,
+      "threshold": 0.01,
+      "calls": 8238,
+      "cost_model": 11396.0,
+      "cost_default_0.5": 104754.0,
+      "cost_call_everyone": 11396.0,
+      "saving_vs_call_everyone": 0.0
+    },
+    {
+      "cost_fp": 10,
+      "cost_fn": 50,
+      "threshold": 0.08,
+      "calls": 3859,
+      "cost_model": 60350.0,
+      "cost_default_0.5": 108170.0,
+      "cost_call_everyone": 56980.0,
+      "saving_vs_call_everyone": -0.05914355914355918
+    }
+  ],
+  "top_permutation_features": [
+    "previously_contacted",
+    "month",
+    "job",
+    "contact",
+    "poutcome"
+  ],
+  "random_split_reference": {
+    "logistic": {
+      "cv_roc_auc": 0.7889011723199426,
+      "cv_roc_auc_sd": 0.00665236323059643,
+      "cv_pr_auc": 0.4495688981272967,
+      "cv_brier": 0.07888604088126028,
+      "test_roc_auc": 0.8008457061653852,
+      "test_pr_auc": 0.46525985263728226,
+      "test_brier": 0.07686250409033378
+    },
+    "logistic (balanced)": {
+      "cv_roc_auc": 0.7896112233073351,
+      "cv_roc_auc_sd": 0.005424195196759041,
+      "cv_pr_auc": 0.4438920998511512,
+      "cv_brier": 0.1651192310387508,
+      "test_roc_auc": 0.8009878119250908,
+      "test_pr_auc": 0.45970096825601864,
+      "test_brier": 0.16163958063537412
+    },
+    "random forest": {
+      "cv_roc_auc": 0.7918116254297102,
+      "cv_roc_auc_sd": 0.0036165850758731913,
+      "cv_pr_auc": 0.46889632050158125,
+      "cv_brier": 0.07720557486589,
+      "test_roc_auc": 0.8091876385678569,
+      "test_pr_auc": 0.4936358690691326,
+      "test_brier": 0.0743572625938177
+    },
+    "lightgbm": {
+      "cv_roc_auc": 0.794806957620188,
+      "cv_roc_auc_sd": 0.003652276126968922,
+      "cv_pr_auc": 0.4693416549193339,
+      "cv_brier": 0.07726202470198199,
+      "test_roc_auc": 0.8137826371526959,
+      "test_pr_auc": 0.4947431342904054,
+      "test_brier": 0.07411943617456163
     }
   }
 }
