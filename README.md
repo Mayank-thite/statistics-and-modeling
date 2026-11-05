@@ -134,6 +134,13 @@ docs/img/             charts used in this README
 - Moro, S., Rita, P., and Cortez, P. (2014). Bank Marketing. UCI Machine Learning Repository. https://doi.org/10.24432/C5K306
 - Moro, S., Cortez, P., and Rita, P. (2014). A data-driven approach to predict the success of bank telemarketing. Decision Support Systems, 62, 22 to 31.
 
+## Problems I ran into
+
+- **A flattering split.** The bank model scored 0.814 ROC-AUC on a random split. On a time-ordered split it drops to 0.701, because the conversion rate went from 6.37% to 30.83% between the two periods. The time split is now the main result.
+- **Macro features acting as a calendar.** `nr_employed` takes one value per month, so it mostly tells the model which month a call came from. Within a single month, every model scores only 0.615 to 0.635.
+- **Calling everyone won.** At my assumed costs (5 per call, 50 per missed subscriber), calling everyone beat every model threshold on the later calls. None of the five cost pairs I tried changed that.
+- **Autocorrelated days.** My first working-day t-test treated days as independent and said there was no difference. Adjusting for season and year with HAC errors gives +190.8 rides a day (p = 0.048).
+
 ## License
 
 Code is MIT licensed, see [LICENSE](LICENSE). The datasets belong to their authors and are used under CC BY 4.0.
