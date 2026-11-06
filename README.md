@@ -1,16 +1,36 @@
-# Statistics and Modeling
+<div align="center">
+
+<img src="docs/img/banner.svg" alt="Statistics and Modeling" width="100%">
+
+Six executed notebooks and a small tested package: hypothesis tests, bootstrap,<br>power, regression and classification, on UCI bank marketing and bike sharing data.
+
+[![CI](https://github.com/Mayank-thite/statistics-and-modeling/actions/workflows/ci.yml/badge.svg)](https://github.com/Mayank-thite/statistics-and-modeling/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-6%20notebooks-F37626?logo=jupyter&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-models-F7931E?logo=scikitlearn&logoColor=white)
+![LightGBM](https://img.shields.io/badge/LightGBM-boosting-2E7D32)
+![License](https://img.shields.io/badge/License-MIT-F7DF1E)
+
+![Random split ROC-AUC](https://img.shields.io/badge/Random%20split%20ROC--AUC-0.814-0284C7)
+![Honest time split ROC-AUC](https://img.shields.io/badge/Honest%20time%20split%20ROC--AUC-0.701-0369A1)
+![Conversion drift](https://img.shields.io/badge/Conversion%20drift-6.37%25%20to%2030.83%25-DC2626)
+
+[**The short version**](#-the-short-version) · [**What's in here**](#-whats-in-here) · [**Data**](#-data) · [**Classification: term deposit subscription**](#-classification-term-deposit-subscription) · [**Regression: hourly bike rentals**](#-regression-hourly-bike-rentals) · [**Statistics**](#-statistics) · [**How to run**](#-how-to-run) · [**Technical details**](#-technical-details) · [**Problems I ran into**](#-problems-i-ran-into)
+
+</div>
 
 Built in 2026 on public UCI datasets.
 
 I use this repo to work through the statistics and modeling I'd expect to be asked about in an interview, on two real datasets. There are six notebooks, executed with outputs saved, and a small tested Python package in `src/`. Every number below comes from code in this repo.
 
-## The short version
+## 📊 The short version
 
-The bank model is the part I'd point a hiring manager to, mostly because of what went wrong with it. On the usual random split LightGBM scores a test ROC-AUC of 0.814. Trained on the first 80% of calls (May 2008 to May 2009) and tested on the rest, the model I picked scores 0.701, the best of the four I tried scores 0.748, and LightGBM drops to 0.658. Conversion went from 6.37% to 30.83% between the two periods, and at my assumed call costs no model threshold beats simply calling everyone. The time split is the honest number, so that's what I report.
+> [!IMPORTANT]
+> The bank model is the part I'd point a hiring manager to, mostly because of what went wrong with it. On the usual random split LightGBM scores a test ROC-AUC of 0.814. Trained on the first 80% of calls (May 2008 to May 2009) and tested on the rest, the model I picked scores 0.701, the best of the four I tried scores 0.748, and LightGBM drops to 0.658. Conversion went from 6.37% to 30.83% between the two periods, and at my assumed call costs no model threshold beats simply calling everyone. The time split is the honest number, so that's what I report.
 
 ![Monthly calls and conversion rate, with the train/test split](docs/img/bank_drift.png)
 
-## What's in here
+## 💬 What's in here
 
 | Notebook | What I do in it |
 |---|---|
@@ -21,7 +41,7 @@ The bank model is the part I'd point a hiring manager to, mostly because of what
 | [05 Classification](notebooks/05_classification_bank_marketing.ipynb) | Time-ordered evaluation, macro columns as a time proxy, a cost-based threshold with a sensitivity check, the random split for reference |
 | [06 Model card](notebooks/06_model_card_summary.ipynb) | Reads the saved results and lists what works, what doesn't, and the limits |
 
-## Data
+## 🧾 Data
 
 | Dataset | Used for | Source | License |
 |---|---|---|---|
@@ -30,7 +50,7 @@ The bank model is the part I'd point a hiring manager to, mostly because of what
 
 Raw files are not committed. `scripts/download_data.py` fetches them from UCI into `data/raw/`.
 
-## Classification: term deposit subscription
+## 🎯 Classification: term deposit subscription
 
 I dropped `duration` because call length is only known after the call ends. The file has no dates, but it is in call order and `month` only moves forward, so I rebuilt the calendar month of each call. That's how I found that `nr_employed` takes exactly one value per month. It's a month label in disguise, and the other macro columns are close to it.
 
@@ -65,7 +85,7 @@ On the random split, for reference, LightGBM gets ROC-AUC 0.814 and PR-AUC 0.495
 
 ![ROC by split and calibration on later calls](docs/img/bank_roc_pr.png)
 
-## Regression: hourly bike rentals
+## 📉 Regression: hourly bike rentals
 
 Daily OLS (731 days) has R squared 0.851. Residuals are autocorrelated (Durbin-Watson 1.210), so I report Newey-West standard errors, which are up to 2.08 times the plain OLS ones. Predicted rentals peak at about 27.6 C.
 
@@ -82,7 +102,7 @@ Every test month is under-predicted on average (October by about 28 rides an hou
 
 ![LightGBM vs actual, one test week](docs/img/bike_forecast.png)
 
-## Statistics
+## 📐 Statistics
 
 - Hourly rental counts have skew 1.277. By n = 30 the sample mean is close to normal, and its spread matches sigma over root n (33.29 measured vs 33.12 predicted). Over 2,000 samples of n = 50, t intervals covered the true mean 95.3% of the time, and percentile bootstrap intervals for the median covered 94.3%.
 - Working days vs days off: the plain Welch test says no difference (p = 0.11, d = 0.132). I don't trust it on its own. Daily counts have lag-1 autocorrelation 0.849 and most of the spread is season and growth. Holding season and year fixed with HAC errors, working days come out 190.8 rides a day higher (p = 0.048, 95% CI 1.3 to 380.2). Adding weather (notebook 4) shrinks it to about 105 (p = 0.128). My reading is a small bump at most, so plan around the hourly shapes instead.
@@ -93,7 +113,7 @@ Every test month is under-predicted on average (October by about 28 rides an hou
 
 ![Central limit theorem on hourly bike counts](docs/img/clt.png)
 
-## How to run
+## 🚀 How to run
 
 Tested with Python 3.13 on Linux. Needs `make`.
 
@@ -113,7 +133,12 @@ make notebooks  # execute every notebook in place with nbconvert
 
 A full `make all` takes about 10 minutes on a 4-core machine, most of it notebooks 3 to 5. All randomness is seeded (`src.SEED = 42`). CI runs ruff and pytest on every push, using only tiny CSVs built inside the tests, so it needs no download.
 
-## Layout
+## 🔧 Technical details
+For readers who want the full detail. Click a section to open it.
+
+<details>
+<summary><b>Layout</b></summary>
+<br>
 
 ```
 notebooks/            numbered, executed notebooks
@@ -128,19 +153,25 @@ results/              metrics written by notebooks 4 and 5, read by notebook 6
 docs/img/             charts used in this README
 ```
 
-## Citations
+</details>
+
+<details>
+<summary><b>Citations</b></summary>
+<br>
 
 - Fanaee-T, H. (2013). Bike Sharing. UCI Machine Learning Repository. https://doi.org/10.24432/C5W894
 - Moro, S., Rita, P., and Cortez, P. (2014). Bank Marketing. UCI Machine Learning Repository. https://doi.org/10.24432/C5K306
 - Moro, S., Cortez, P., and Rita, P. (2014). A data-driven approach to predict the success of bank telemarketing. Decision Support Systems, 62, 22 to 31.
 
-## Problems I ran into
+</details>
+
+## 🐛 Problems I ran into
 
 - **A flattering split.** The bank model scored 0.814 ROC-AUC on a random split. On a time-ordered split it drops to 0.701, because the conversion rate went from 6.37% to 30.83% between the two periods. The time split is now the main result.
 - **Macro features acting as a calendar.** `nr_employed` takes one value per month, so it mostly tells the model which month a call came from. Within a single month, every model scores only 0.615 to 0.635.
 - **Calling everyone won.** At my assumed costs (5 per call, 50 per missed subscriber), calling everyone beat every model threshold on the later calls. None of the five cost pairs I tried changed that.
 - **Autocorrelated days.** My first working-day t-test treated days as independent and said there was no difference. Adjusting for season and year with HAC errors gives +190.8 rides a day (p = 0.048).
 
-## License
+## 📜 License
 
 Code is MIT licensed, see [LICENSE](LICENSE). The datasets belong to their authors and are used under CC BY 4.0.
